@@ -187,7 +187,7 @@ public class Visualization extends JApplet {
 			int numX = arrow.x1 + numLength / 2;
 			int j;
 			for (j = arrow.start; j <= arrow.end; j++) {
-				// g2.drawString(new Integer(j).toString(), numX, numberHeight);
+				g2.drawString(new Integer(j).toString(), numX, numberHeight);
 
 				// Store number x locations for further use
 				numLocation[ctr] = new Read();
