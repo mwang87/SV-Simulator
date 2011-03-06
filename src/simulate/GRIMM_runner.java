@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 
 
@@ -45,11 +46,40 @@ public class GRIMM_runner {
 		p.print(GRIMM_output);
 		System.out.println();
 		BufferedReader br = new BufferedReader(new FileReader (output_file_name2));
+		ArrayList<InversionEvent> inversion_steps = new ArrayList<InversionEvent>(); 
+		
 		while(br.ready()){
 			String line = br.readLine();
-			if(line.contains("Step"))
+			if(line.contains("Step") && !line.contains("Step 0")){
+				boolean start_found = false;
+				boolean end_found = false;
+				int start = -1;
+				int end = -1;
 				System.out.println(line);
+				StringTokenizer st = new StringTokenizer(line);
+				while(st.hasMoreTokens()){
+					if(st.nextToken().equals("gene")){
+						String pos_str = st.nextToken();
+						//System.out.println(pos_str);
+						if(start_found == false){
+							start_found = true;
+							start = Integer.parseInt(pos_str);
+						}
+						else{
+							end = Integer.parseInt(pos_str);
+							InversionEvent event = new InversionEvent(start, end);
+							inversion_steps.add(event);
+						}
+					}
+				}
+				
+			}
 		}
+		
+		for(InversionEvent event : inversion_steps){
+			System.out.println("Inversion: " + event.toString());
+		}
+		
 		
 		return 0;
 	}

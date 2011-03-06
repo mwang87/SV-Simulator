@@ -27,7 +27,8 @@ public class main {
 
 		//testDoubleInversionDeletion();
 		
-		testDoubleDeletion();
+		//testDoubleDeletion();
+		testDoubleInversionDeletion4();
 	}
 	
 	public static void testSingleDeletion() throws IOException{
@@ -46,7 +47,7 @@ public class main {
 		sample_genome.delete(25, 27);
 		sample_genome.print();
 		
-		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
+		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);	
 	}
 	
 	public static void testDoubleInversionDeletion() throws IOException{
@@ -63,6 +64,8 @@ public class main {
 	}
 	
 	
+	
+	
 	public static void testDoubleInversionDeletion2() throws IOException{
 		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
 		sample_genome.print();
@@ -76,6 +79,33 @@ public class main {
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);
 	}
 	
+	public static void testDoubleInversionDeletion3() throws IOException{
+		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
+		
+		sample_genome.print();
+		sample_genome.invert(4, 25);
+		sample_genome.print();
+		sample_genome.invert(4, 20);
+		sample_genome.print();
+		sample_genome.print();
+		sample_genome.delete(12, 14);
+		
+		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
+	}
+	
+	public static void testDoubleInversionDeletion4() throws IOException{
+		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
+		
+		sample_genome.print();
+		sample_genome.invert(4, 20);
+		sample_genome.print();
+		sample_genome.invert(4, 25);
+		sample_genome.print();
+		sample_genome.print();
+		sample_genome.delete(12, 14);
+		
+		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
+	}
 
 	
 	public static void testQuadrupleInversion(){
