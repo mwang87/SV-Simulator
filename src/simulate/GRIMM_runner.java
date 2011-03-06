@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 
 public class GRIMM_runner {
 
-	public int run(ArrayList<SegmentIDPosition> segment_numbers) throws IOException{
+	public ArrayList<InversionEvent> run(ArrayList<SegmentIDPosition> segment_numbers) throws IOException{
 		String output_file_name = "/home/mingxun/Desktop/temp.txt";
 		String output_file_name2 = "/home/mingxun/Desktop/temp2.txt";
 		FileOutputStream out = new FileOutputStream(output_file_name);
@@ -81,6 +81,6 @@ public class GRIMM_runner {
 		}
 		
 		
-		return 0;
+		return inversion_steps;
 	}
 }

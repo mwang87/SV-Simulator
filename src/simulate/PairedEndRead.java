@@ -22,10 +22,10 @@ public class PairedEndRead {
 		int read1_second_sign = Integer.signum(read1.second_location);
 		int read2_second_sign = Integer.signum(read2.second_location);
 		
-		if( read1_first_sign != read2_first_sign)
+		if(read1_first_sign != read2_first_sign)
 			return false;
 		
-		if( read1_second_sign != read2_second_sign)
+		if(read1_second_sign != read2_second_sign)
 			return false;
 		
 		int first_diff = read2.first_location - read1.first_location;

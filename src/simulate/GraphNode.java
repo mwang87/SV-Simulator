@@ -13,7 +13,18 @@ public class GraphNode {
 		if(neighbor1 != null){
 			neighbor2 = neighbor;
 		}
+		else{
+			neighbor1 = neighbor;
+		}
 	}
 	
+	public void removeNeighbor(GraphNode neighbor){
+		if(neighbor1 == neighbor){
+			neighbor2 = null;
+		}
+		if(neighbor2 == neighbor){
+			neighbor2 = null;
+		}
+	}
 	
 }

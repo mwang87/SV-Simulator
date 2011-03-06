@@ -28,6 +28,8 @@ public class main {
 		//testDoubleInversionDeletion();
 		
 		//testDoubleDeletion();
+		//testDoubleInversionDeletion2();
+		//testDoubleInversionDeletion3();
 		testDoubleInversionDeletion4();
 	}
 	
@@ -37,7 +39,7 @@ public class main {
 		sample_genome.delete(12, 14);
 		sample_genome.print();
 		
-		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
+		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);	
 	}
 	
 	public static void testDoubleDeletion() throws IOException{
@@ -62,9 +64,6 @@ public class main {
 		
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}
-	
-	
-	
 	
 	public static void testDoubleInversionDeletion2() throws IOException{
 		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
@@ -316,7 +315,11 @@ public class main {
 		System.out.println(read_cluster.toString());
 		ArrayList<SegmentIDPosition> segment_numbers = read_cluster.findBreakpoints(concordant_reads);
 		GRIMM_runner runner = new GRIMM_runner();
-		runner.run(segment_numbers);
+		ArrayList<InversionEvent> inversions = runner.run(segment_numbers);
+		
+		
+		SimpleDeletionDetector deletiondetector = new SimpleDeletionDetector();
+		deletiondetector.run(inversions, segment_numbers.size());
 		new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(false);
 	}
 	
