@@ -28,6 +28,13 @@ public class GenomeSimpleRep extends Genome{
 		return 0;
 	}
 	
+	public int delete(int start, int end){
+		for(int i = start; i < end; i++){
+			genome_array.remove(start);
+		}
+		
+		return 0;
+	}
 	
 	public void print(){
 		for(int i = 0; i < genome_array.size(); i++)

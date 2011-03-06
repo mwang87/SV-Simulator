@@ -37,7 +37,7 @@ public class Cluster {
 		}
 	}
 	
-	public void findBreakpoints(ArrayList<PairedEndRead> concordant_reads){
+	public ArrayList<SegmentIDPosition> findBreakpoints(ArrayList<PairedEndRead> concordant_reads){
 		ArrayList<SegmentPair> segment_pairs = new ArrayList<SegmentPair>();
 		for(int i = 0; i < clustered_reads.size(); i++){
 			//System.out.println("Cluster " + i);
@@ -174,6 +174,8 @@ public class Cluster {
 		for(int i = 0; i < segment_numbers.size(); i++){
 			System.out.print(i+1 + " ");
 		}
+		
+		return segment_numbers;
 	}
 	
 	@Override
