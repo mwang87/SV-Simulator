@@ -1,5 +1,6 @@
 package simulate;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -14,11 +15,11 @@ public class main {
 		//testClusterGeneration();
 		//testSingleInversion();
 		
-		//testDoubleInversion();
+		testDoubleInversion();
 		//testDoubleInversion2();
 		//testDoubleInversion3();
 		
-		testTripleInversion();		
+		//testTripleInversion();		
 
 		//testQuadrupleInversion();		
 
@@ -153,7 +154,10 @@ public class main {
 		System.out.println(read_cluster.toString());
 		read_cluster.findBreakpoints(concordant_reads);
 		
-		new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(false);
+		ArrayList<Color> colors = Visualization.generateColor();
+		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
+		new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
+
 	}
 	
 	public static void testDoubleInversion2(){
