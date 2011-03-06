@@ -1,5 +1,7 @@
 package simulate;
 
+
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -28,9 +30,9 @@ public class main {
 		//testDoubleInversionDeletion();
 		
 		//testDoubleDeletion();
-		//testDoubleInversionDeletion2();
+		testDoubleInversionDeletion2();
 		//testDoubleInversionDeletion3();
-		testDoubleInversionDeletion4();
+		//testDoubleInversionDeletion4();
 	}
 	
 	public static void testSingleDeletion() throws IOException{
@@ -100,8 +102,9 @@ public class main {
 		sample_genome.print();
 		sample_genome.invert(4, 25);
 		sample_genome.print();
-		sample_genome.print();
 		sample_genome.delete(12, 14);
+		sample_genome.print();
+
 		
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}
@@ -134,7 +137,9 @@ public class main {
 			System.out.println(read_cluster.toString());
 			read_cluster.findBreakpoints(concordant_reads);
 			
-			new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(true);
+			ArrayList<Color> colors = Visualization.generateColor();
+			new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
+			new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
 
 		}
 	}
@@ -166,7 +171,9 @@ public class main {
 			System.out.println(read_cluster.toString());
 			read_cluster.findBreakpoints(concordant_reads);
 			
-			new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(true);
+			ArrayList<Color> colors = Visualization.generateColor();
+			new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
+			new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
 			try {
 				Thread.sleep(1000000);
 			} catch (InterruptedException e) {
@@ -202,7 +209,10 @@ public class main {
 		System.out.println(read_cluster.toString());
 		read_cluster.findBreakpoints(concordant_reads);
 		
-		new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(false);
+		ArrayList<Color> colors = Visualization.generateColor();
+		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
+		new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
+
 	}
 	
 	public static void testDoubleInversion2(){
@@ -230,7 +240,10 @@ public class main {
 		Cluster read_cluster = new Cluster(reads);
 		System.out.println(read_cluster.toString());
 		read_cluster.findBreakpoints(concordant_reads);
-		new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(false);
+		
+		ArrayList<Color> colors = Visualization.generateColor();
+		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
+		new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
 
 		
 	}
@@ -260,7 +273,10 @@ public class main {
 		Cluster read_cluster = new Cluster(reads);
 		System.out.println(read_cluster.toString());
 		read_cluster.findBreakpoints(concordant_reads);
-		new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(false);
+		
+		ArrayList<Color> colors = Visualization.generateColor();
+		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
+		new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
 
 		
 	}
@@ -293,7 +309,9 @@ public class main {
 		System.out.println(read_cluster.toString());
 		read_cluster.findBreakpoints(concordant_reads);
 		
-		new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(false);
+		ArrayList<Color> colors = Visualization.generateColor();
+		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
+		new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
 
 	}
 	
@@ -315,12 +333,16 @@ public class main {
 		System.out.println(read_cluster.toString());
 		ArrayList<SegmentIDPosition> segment_numbers = read_cluster.findBreakpoints(concordant_reads);
 		GRIMM_runner runner = new GRIMM_runner();
+
 		ArrayList<InversionEvent> inversions = runner.run(segment_numbers);
 		
 		
 		SimpleDeletionDetector deletiondetector = new SimpleDeletionDetector();
 		deletiondetector.run(inversions, segment_numbers.size());
-		new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(false);
+		
+		ArrayList<Color> colors = Visualization.generateColor();
+		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
+		new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
 	}
 	
 	public static void testClusterGeneration(){
@@ -346,7 +368,9 @@ public class main {
 		Cluster read_cluster = new Cluster(reads);
 		System.out.println(read_cluster.toString());
 		
-		new Visualization(sample_genome, concordant_reads, read_cluster).drawStuff(false);
+		ArrayList<Color> colors = Visualization.generateColor();
+		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
+		new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
 
 	}
 }

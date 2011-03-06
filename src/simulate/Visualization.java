@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -19,12 +20,17 @@ public class Visualization extends JApplet {
 	GenomeSimpleRep sample_genome = null;
 	ArrayList<PairedEndRead> concordant_reads = null;
 	Cluster read_cluster = null;
-
+	boolean iambadatprogramming = false;
+	ArrayList<Color> clustColors = null;
+	
 	public Visualization(GenomeSimpleRep g, ArrayList<PairedEndRead> cr,
-			Cluster rc) {
+			Cluster rc, ArrayList<Color> colors, boolean wtf) {
 		sample_genome = g;
 		concordant_reads = cr;
 		read_cluster = rc;
+		iambadatprogramming = wtf;
+		clustColors = colors;
+
 	}
 
 	public void drawStuff(boolean writeToFile) {
@@ -217,6 +223,7 @@ public class Visualization extends JApplet {
 		HashMap<Integer, Visualization.Read> indexToRead = new HashMap<Integer, Visualization.Read>();
 		for (int i = 0; i < numLocation.length; i++) {
 			if (genomeArray[i] < 0) {
+				//System.out.println("ehre" + iambadatprogramming);
 				numLocation[i].seqStart = numLocation[i].mid + numberWidth / 2;
 				numLocation[i].seqEnd = numLocation[i].mid - numberWidth / 2;
 			} else {
@@ -227,24 +234,24 @@ public class Visualization extends JApplet {
 			indexToRead.put(genomeArray[i], numLocation[i]);
 
 		}
-
-		// Draw Reads
-		g2.setStroke(stroke);
-		for (int i = 0; i < numLocation.length; i++) {
-			g2.draw(new Line2D.Double(numLocation[i].seqStart, peHeight,
-					numLocation[i].seqEnd, peHeight));
-		}
+		
+		ArrayList<Integer> readsToDraw = new ArrayList<Integer>();
 
 		// Draw Concordant Reads
-		for (int i = 0; i < concordant_reads.size(); i++) {
-			g2.setStroke(stroke);
-			// g2.setColor(Visualization.getColor());
-			PairedEndRead read = concordant_reads.get(i);
-			int num1 = indexToRead.get(new Integer(read.first_location)).seqEnd;
-			int num2 = indexToRead.get(new Integer(read.second_location)).seqStart;
-			int numMid = (num1 + num2) / 2;
-			g2.draw(new QuadCurve2D.Double(num1, peHeight, numMid,
-					peCurveHeight, num2, peHeight));
+		if (concordant_reads != null) {
+			for (int i = 0; i < concordant_reads.size(); i++) {
+				g2.setStroke(stroke);
+				// g2.setColor(Visualization.getColor());
+				PairedEndRead read = concordant_reads.get(i);
+				readsToDraw.add(read.first_location);
+				readsToDraw.add(read.second_location);
+
+				int num1 = indexToRead.get(new Integer(read.first_location)).seqEnd;
+				int num2 = indexToRead.get(new Integer(read.second_location)).seqStart;
+				int numMid = (num1 + num2) / 2;
+				g2.draw(new QuadCurve2D.Double(num1, peHeight, numMid,
+						peCurveHeight, num2, peHeight));
+			}
 		}
 
 		// >>>>> START SIMULATION CODE
@@ -252,19 +259,54 @@ public class Visualization extends JApplet {
 		// <<<<< END SIMULATION CODE
 
 		ArrayList<ArrayList<PairedEndRead>> clusters = read_cluster.clustered_reads;
-
+		
+		// Draw clusters and label via coloring
 		for (int i = 0; i < clusters.size(); i++) {
-			g2.setColor(Visualization.getColor());
+			//g2.setColor(Visualization.getColor());
+			g2.setColor(clustColors.get(i));
+
 			for (int j = 0; j < clusters.get(i).size(); j++) {
 				g2.setStroke(stroke);
 				PairedEndRead read = clusters.get(i).get(j);
-				int num1 = indexToRead.get(new Integer(read.first_location)).seqEnd;
-				int num2 = indexToRead.get(new Integer(read.second_location)).seqStart;
-				int numMid = (num1 + num2) / 2;
+				readsToDraw.add(read.first_location);
+				readsToDraw.add(read.second_location);
+				int num1, num2 = 0;
+				if (iambadatprogramming) {
+					if (Math.signum(read.first_location) < 0)
+						num1 = indexToRead.get(Math.abs(new Integer(read.first_location))).seqStart;
+					else
+						num1 = indexToRead.get(Math.abs(new Integer(read.first_location))).seqEnd;
+					
+					if (Math.signum(read.second_location) < 0)
+						num2 = indexToRead.get(Math.abs(new Integer(read.second_location))).seqEnd;
+					else
+						num2 = indexToRead.get(Math.abs(new Integer(read.second_location))).seqStart;
+				} else {
+					num1 = indexToRead.get(new Integer(read.first_location)).mid;
+					num2 = indexToRead.get(new Integer(read.second_location)).mid;
+				}
+				int numMid = (num1 + num2 + i*10) / 2;
 				g2.draw(new QuadCurve2D.Double(num1, peHeight, numMid,
 						clustHeight, num2, peHeight));
 			}
 		}
+		
+		Visualization.removeDuplicate(readsToDraw);
+		
+		// Draw Read
+		g2.setStroke(stroke);
+		g2.setColor(Color.BLACK);
+		for (int i = 0; i < readsToDraw.size(); i++) {
+			Read num;
+			if (iambadatprogramming) {
+				num = indexToRead.get(Math.abs(new Integer (readsToDraw.get(i))));
+			} else {
+				num = indexToRead.get(new Integer (readsToDraw.get(i)));
+			}
+			
+			g2.draw(new Line2D.Double(num.seqStart, peHeight,num.seqEnd, peHeight));
+		}
+		
 
 	}
 
@@ -290,6 +332,14 @@ public class Visualization extends JApplet {
 	 * f.pack(); f.setSize(new Dimension(1200, 400)); f.setVisible(true); }
 	 */
 
+	// http://www.devx.com/tips/Tip/20864
+	public static void removeDuplicate(ArrayList<Integer> arlList)
+	  {
+	   HashSet<Integer> h = new HashSet<Integer>(arlList);
+	   arlList.clear();
+	   arlList.addAll(h);
+	  }
+	
 	/**
 	 * http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-
 	 * programmatically/
@@ -301,7 +351,14 @@ public class Visualization extends JApplet {
 		double golden_ratio_conjugate = 0.618033988749895;
 		rand += golden_ratio_conjugate;
 		return new Color(Color.HSBtoRGB((float) rand, 0.99f, 0.99f));
-
+	}
+	
+	public static ArrayList<Color> generateColor() {
+		ArrayList<Color> colorList = new ArrayList<Color>();
+		for (int i = 0; i < 10; i++) {
+			colorList.add(getColor());
+		}
+		return colorList;
 	}
 
 	public class Arrow {
