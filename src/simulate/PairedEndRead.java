@@ -1,8 +1,8 @@
 package simulate;
 
 public class PairedEndRead {
-	int first_location;
-	int second_location;
+	public int first_location;
+	public int second_location;
 	int length;
 	
 	@Override

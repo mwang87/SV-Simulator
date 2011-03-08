@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GenomeSimpleRep extends Genome{
+	int original_size;
 	ArrayList<Integer> genome_array;
 	Random generator;
 	public GenomeSimpleRep(int length) {
 		genome_array = new ArrayList<Integer>();
+		original_size = length;
 		for(int i = 0; i < length; i++){
 			genome_array.add(i);
 		}

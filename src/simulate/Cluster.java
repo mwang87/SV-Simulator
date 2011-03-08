@@ -37,7 +37,7 @@ public class Cluster {
 		}
 	}
 	
-	public ArrayList<SegmentIDPosition> findBreakpoints(ArrayList<PairedEndRead> concordant_reads){
+	public ArrayList<SegmentIDPosition> findBreakpoints(ArrayList<PairedEndRead> concordant_reads, ArrayList<ArrayList<Integer> > segment_values){
 		ArrayList<SegmentPair> segment_pairs = new ArrayList<SegmentPair>();
 		for(int i = 0; i < clustered_reads.size(); i++){
 			//System.out.println("Cluster " + i);
@@ -98,7 +98,10 @@ public class Cluster {
 		
 		int traversing_direction = 1;		//1 means forward, -1 means backwards
 		int traversal_position = 0;
+		int last_traversal_position = 0; 
+		int last_last_traversal_position = 0; 
 		int current_segment_start_location = 1;
+		ArrayList<Integer> segment_included_values = new ArrayList<Integer>();
 		
 		ArrayList<SegmentIDPosition> segment_numbers = new ArrayList<SegmentIDPosition>();
 		
@@ -111,12 +114,17 @@ public class Cluster {
 					SegmentIDPosition segment = new SegmentIDPosition((segment_numbers.size() + 1) * (int)Math.signum(segment_pairs.get(i).start_first), Math.abs(traversal_position));
 					segment_numbers.add(segment);
 					
-					System.out.println("Exit Position: " + traversal_position);
-					System.out.println(segment.toString());
+					//System.out.println("Exit Position: " + traversal_position);
+					//System.out.println(segment.toString());
 					traversing_direction = 1;
+					
+					last_last_traversal_position = last_traversal_position;
+					last_traversal_position = traversal_position;
+					segment_included_values.add(traversal_position);
 					
 					if(Math.signum(segment_pairs.get(i).start_second) == 1){
 						traversal_position = Math.min(segment_pairs.get(i).start_second, segment_pairs.get(i).end_second);
+						
 					}
 					else if(Math.signum(segment_pairs.get(i).start_second) == -1){
 						traversal_position = Math.min(segment_pairs.get(i).start_second, segment_pairs.get(i).end_second);
@@ -136,6 +144,10 @@ public class Cluster {
 					//System.out.println(segment.toString());
 					traversing_direction = 1;
 					
+					last_last_traversal_position = last_traversal_position;
+					last_traversal_position = traversal_position;
+					segment_included_values.add(traversal_position);
+					
 					if(Math.signum(segment_pairs.get(i).start_first) == 1){
 						traversal_position = Math.min(segment_pairs.get(i).start_first, segment_pairs.get(i).end_first);
 					}
@@ -151,10 +163,17 @@ public class Cluster {
 			}
 			
 			if(hit_segment == false){
+				segment_included_values.add(traversal_position);
 				traversal_position += traversing_direction;
-				if(traversal_position < 100){
-					System.out.println(traversal_position);
+			}
+			else{
+				System.out.print("Contiguous Segment: ");
+				for(Integer position: segment_included_values){
+					System.out.print(position + " ");
 				}
+				System.out.println();
+				segment_values.add(segment_included_values);
+				segment_included_values = new ArrayList<Integer>();
 			}
 			
 			if(segment_pairs.size() == 0){
