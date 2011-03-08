@@ -129,18 +129,23 @@ public class main {
 	
 	public static void testDoubleInversionDeletion6() throws IOException{
 		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
+		ArrayList<GenomeSimpleRep> genome_array = new ArrayList<GenomeSimpleRep>();
 		
+		genome_array.add(sample_genome.clone());
 		sample_genome.print();
 		sample_genome.invert(4, 8);
+		genome_array.add(sample_genome.clone());
 		sample_genome.print();
 		sample_genome.delete(3, 6);
+		genome_array.add(sample_genome.clone());
 		sample_genome.print();
 		sample_genome.invert(4, 10);
+		genome_array.add(sample_genome.clone());
 		sample_genome.print();
 		//sample_genome.invert(2, 9);
 		//sample_genome.print();
 
-		
+		new VisualizeArrow(genome_array).drawStuff(false);
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}
 
@@ -250,7 +255,7 @@ public class main {
 		
 		ArrayList<Color> colors = Visualization.generateColor();
 		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
-		new Visualization(new GenomeSimpleRep(sample_genome.genome_array.size()), null, read_cluster, colors, true).drawStuff(false);
+		new Visualization(new GenomeSimpleRep(sample_genome.original_size), null, read_cluster, colors, true).drawStuff(false);
 	}
 	
 	public static void testClusterGeneration(){
