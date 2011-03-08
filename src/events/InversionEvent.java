@@ -1,8 +1,9 @@
-package simulate;
+package events;
 
-public class InversionEvent {
-	int start;
-	int end;
+
+public class InversionEvent extends Event{
+	public int start;
+	public int end;
 	
 	public InversionEvent(int start, int end) {
 		this.start = start;
@@ -13,7 +14,7 @@ public class InversionEvent {
 	@Override
 	public String toString(){
 		String ret = "";
-		ret += "(" + start + "," + end + ")";
+		ret += "Inv (" + start + "," + end + ")";
 		return ret;
 	}
 }

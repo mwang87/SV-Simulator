@@ -2,6 +2,8 @@ package simulate;
 
 import java.util.ArrayList;
 
+import events.InversionEvent;
+
 public class SimpleDeletionDetector {
 
 	public void run(ArrayList<InversionEvent> inversions, int size){

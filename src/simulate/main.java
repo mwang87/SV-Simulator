@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import events.InversionEvent;
+
 public class main {
 
 	/**

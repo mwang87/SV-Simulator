@@ -3,6 +3,8 @@ package simulate;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import events.InversionEvent;
+
 public class NotSimpleDeletionDetector {
 	public int run(ArrayList<InversionEvent> inversions, ArrayList<ArrayList<Integer>> segment_values, int segment_count, ArrayList<Integer> coverage){
 		GenomeCoverage coverage_runner = new GenomeCoverage();
