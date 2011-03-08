@@ -19,9 +19,10 @@ import javax.swing.JFrame;
 public class VisualizeArrow extends JApplet {
 
 	ArrayList<GenomeSimpleRep> sample_genome_array = null;
-	
+	int original_size = -1;
 	public VisualizeArrow(ArrayList<GenomeSimpleRep> g) {
 		sample_genome_array = g;
+		original_size = sample_genome_array.get(0).original_size;
 	}
 
 	public void drawStuff(boolean writeToFile) {
@@ -118,6 +119,10 @@ public class VisualizeArrow extends JApplet {
 		arrows.add(new Arrow(arrowFirst, prev));
 
 		int numLength = (d.width - outerSpacing) / genomeArray.length;
+		int lengthDiff = original_size - genomeArray.length;
+		if ( lengthDiff > 0)
+			numLength = (d.width - outerSpacing - numLength * lengthDiff) / genomeArray.length;
+		//numLength -= (sample_genome.original_size - genomeArray.length) * numLength;
 		// Assign coordinates and directionality to array
 		for (int i = 0; i < arrows.size(); i++) {
 			Arrow arrow = arrows.get(i);
