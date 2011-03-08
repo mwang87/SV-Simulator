@@ -34,7 +34,7 @@ public class main {
 		//testDoubleInversionDeletion3();
 		//testDoubleInversionDeletion4();
 		//testDoubleInversionDeletion5();
-		testDoubleInversionDeletion6();
+		testDoubleInversionDeletion7();
 	}
 	
 	public static void testSingleDeletion() throws IOException{
@@ -136,6 +136,23 @@ public class main {
 		sample_genome.delete(3, 6);
 		sample_genome.print();
 		sample_genome.invert(4, 10);
+		sample_genome.print();
+		//sample_genome.invert(2, 9);
+		//sample_genome.print();
+
+		
+		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
+	}
+	
+	public static void testDoubleInversionDeletion7() throws IOException{
+		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
+		
+		sample_genome.print();
+		sample_genome.invert(6, 12);
+		sample_genome.print();
+		sample_genome.invert(4, 10);
+		sample_genome.print();
+		sample_genome.delete(3, 8);
 		sample_genome.print();
 		//sample_genome.invert(2, 9);
 		//sample_genome.print();
@@ -245,8 +262,16 @@ public class main {
 
 		ArrayList<InversionEvent> inversions = g_runner.run(segment_numbers);
 		
-		SimpleDeletionDetector deletiondetector = new SimpleDeletionDetector();
-		deletiondetector.run(inversions, segment_numbers.size());
+		if(no_coverage_segments > 1){
+			NotSimpleDeletionDetector deletiondetector2 = new NotSimpleDeletionDetector();
+			deletiondetector2.run(inversions, segment_values, segment_numbers.size(), coverage);
+		}
+		else{
+			SimpleDeletionDetector deletiondetector = new SimpleDeletionDetector();
+			deletiondetector.run(inversions, segment_numbers.size());
+		}
+		
+		
 		
 		ArrayList<Color> colors = Visualization.generateColor();
 		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
