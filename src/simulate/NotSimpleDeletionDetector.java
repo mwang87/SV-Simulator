@@ -23,7 +23,7 @@ public class NotSimpleDeletionDetector {
 				event_list.add(del_event);
 			}
 			
-			/*for(InversionEvent inv_event : inversions){
+			for(InversionEvent inv_event : inversions){
 				ArrayList<Integer> inversion_indicies = new ArrayList<Integer>();
 				for(int segment_index = inv_event.start; segment_index <= inv_event.end; segment_index++){
 					System.out.println("Segment Index: " + segment_index);
@@ -39,8 +39,15 @@ public class NotSimpleDeletionDetector {
 					System.out.println("Inversion Index: " + inversion_indicies.get(i));
 				}
 				
-				event_list.add(inv_event);
-			}*/
+				ArrayList<Integer> genome_indicies = genome.getLeftRightIndex(inversion_indicies);
+				int old_left_no_coverage_index = genome_indicies.get(0);
+				int old_right_no_coverage_index = genome_indicies.get(1);
+				genome.invert(old_left_no_coverage_index, old_right_no_coverage_index+1);
+				
+				InversionEvent actual_inv_event = new InversionEvent(old_left_no_coverage_index, old_right_no_coverage_index);
+				
+				event_list.add(actual_inv_event);
+			}
 			
 			return event_list;
 		}

@@ -28,7 +28,7 @@ public class main {
 		
 		//testDoubleInversion();
 		//testDoubleInversion2();
-		//testDoubleInversion3();
+		testDoubleInversion3();
 		
 		//testTripleInversion();		
 
@@ -39,7 +39,7 @@ public class main {
 		//testDoubleDeletion();
 		//testDoubleInversionDeletion2();
 		//testDoubleInversionDeletion3();
-		testDoubleInversionDeletion4();
+		//testDoubleInversionDeletion4();
 		//testDoubleInversionDeletion5();
 		//testDoubleInversionDeletion7();
 	}
@@ -97,8 +97,8 @@ public class main {
 		sample_genome.print();
 		sample_genome.invert(4, 20);
 		sample_genome.print();
-		sample_genome.print();
 		sample_genome.delete(12, 14);
+		sample_genome.print();
 		
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}

@@ -78,12 +78,13 @@ public class GRIMM_runner {
 			}
 		}
 		
-		for(int i = 0; i < inversion_steps.size()/2; i++){
+		//Reversing Direction
+		/*for(int i = 0; i < inversion_steps.size()/2; i++){
 			InversionEvent event1 = inversion_steps.get(inversion_steps.size() - 1 - i);
 			InversionEvent event2 = inversion_steps.get(i);
 			inversion_steps.set(i, event1);
 			inversion_steps.set(inversion_steps.size() - 1 - i, event2);
-		}
+		}*/
 		
 		for(InversionEvent event : inversion_steps){
 			System.out.println("Inversion: " + event.toString());
