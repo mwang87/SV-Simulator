@@ -28,7 +28,7 @@ public class main {
 		
 		//testDoubleInversion();
 		//testDoubleInversion2();
-		testDoubleInversion3();
+		//testDoubleInversion3();
 		
 		//testTripleInversion();		
 
@@ -222,6 +222,7 @@ public class main {
 		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
 		sample_genome.print();
 		sample_genome.invert(15, 25);
+		sample_genome.print();
 		sample_genome.invert(10, 20);
 		sample_genome.print();
 		
@@ -276,17 +277,17 @@ public class main {
 		
 		//Sorting Segment Values
 		//Sort the segment numbers according to the position
-		Collections.sort(segment_values, new Comparator<ArrayList<Integer>>() {
+		/*Collections.sort(segment_values, new Comparator<ArrayList<Integer>>() {
 
 			public int compare(ArrayList<Integer> arg0, ArrayList<Integer> arg1) {
 				// TODO Auto-generated method stub
 				return (Math.abs(arg0.get(0)) - Math.abs(arg1.get(0)));
 			}
-		});
+		});*/
 		
 		NotSimpleDeletionDetector deletiondetector2 = new NotSimpleDeletionDetector();
 		GenomeSimpleRep working_genome = new GenomeSimpleRep(genome.original_size);
-		eventList = deletiondetector2.run(inversions, segment_values, segment_numbers.size(), coverage, eventList, working_genome);
+		eventList = deletiondetector2.run(inversions, segment_values, segment_numbers.size(), coverage, eventList, working_genome, segment_numbers);
 		System.out.println("Eventual Number of Contiguous Deletions: " + eventList.number_contiguous_deletion_sections);
 		
 		//Attempting to Reconstruct Genome 
