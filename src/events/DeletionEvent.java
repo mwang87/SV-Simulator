@@ -1,7 +1,7 @@
 package events;
 
 
-public class DeletionEvent extends Event{
+public class DeletionEvent extends SVEvent{
 	public int start;
 	public int end;
 	

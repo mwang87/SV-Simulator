@@ -1,7 +1,7 @@
 package events;
 
 
-public class InversionEvent extends Event{
+public class InversionEvent extends SVEvent{
 	public int start;
 	public int end;
 	

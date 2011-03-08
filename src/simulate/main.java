@@ -4,10 +4,15 @@ package simulate;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JFrame;
 
+import events.AtomicEventList;
+import events.DeletionEvent;
 import events.InversionEvent;
+import events.SVEvent;
 
 public class main {
 
@@ -34,9 +39,9 @@ public class main {
 		//testDoubleDeletion();
 		//testDoubleInversionDeletion2();
 		//testDoubleInversionDeletion3();
-		//testDoubleInversionDeletion4();
+		testDoubleInversionDeletion4();
 		//testDoubleInversionDeletion5();
-		testDoubleInversionDeletion7();
+		//testDoubleInversionDeletion7();
 	}
 	
 	public static void testSingleDeletion() throws IOException{
@@ -108,7 +113,6 @@ public class main {
 		sample_genome.print();
 		sample_genome.delete(12, 14);
 		sample_genome.print();
-
 		
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}
@@ -268,15 +272,38 @@ public class main {
 		GRIMM_runner g_runner = new GRIMM_runner();
 
 		ArrayList<InversionEvent> inversions = g_runner.run(segment_numbers);
+		AtomicEventList eventList = new AtomicEventList();
 		
-		if(no_coverage_segments > 1){
-			NotSimpleDeletionDetector deletiondetector2 = new NotSimpleDeletionDetector();
-			deletiondetector2.run(inversions, segment_values, segment_numbers.size(), coverage);
+		//Sorting Segment Values
+		//Sort the segment numbers according to the position
+		Collections.sort(segment_values, new Comparator<ArrayList<Integer>>() {
+
+			public int compare(ArrayList<Integer> arg0, ArrayList<Integer> arg1) {
+				// TODO Auto-generated method stub
+				return (Math.abs(arg0.get(0)) - Math.abs(arg1.get(0)));
+			}
+		});
+		
+		NotSimpleDeletionDetector deletiondetector2 = new NotSimpleDeletionDetector();
+		GenomeSimpleRep working_genome = new GenomeSimpleRep(genome.original_size);
+		eventList = deletiondetector2.run(inversions, segment_values, segment_numbers.size(), coverage, eventList, working_genome);
+		System.out.println("Eventual Number of Contiguous Deletions: " + eventList.number_contiguous_deletion_sections);
+		
+		//Attempting to Reconstruct Genome 
+		GenomeSimpleRep reconstructed_genome = new GenomeSimpleRep(genome.original_size);
+		for(SVEvent event : eventList.list_of_events){
+			System.out.println(event.toString());
+			if(event instanceof InversionEvent){
+				InversionEvent inv_event = (InversionEvent)event;
+				reconstructed_genome.invert(inv_event.start, inv_event.end + 1);
+			}
+			if(event instanceof DeletionEvent){
+				DeletionEvent del_event = (DeletionEvent)event;
+				reconstructed_genome.delete(del_event.start, del_event.end + 1);
+			}
+			reconstructed_genome.print();
 		}
-		else{
-			SimpleDeletionDetector deletiondetector = new SimpleDeletionDetector();
-			deletiondetector.run(inversions, segment_numbers.size());
-		}
+		sample_genome.print();
 		
 		
 		
