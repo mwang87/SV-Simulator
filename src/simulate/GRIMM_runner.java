@@ -48,8 +48,11 @@ public class GRIMM_runner {
 		p.print(GRIMM_output);
 		System.out.println();
 		BufferedReader br = new BufferedReader(new FileReader (output_file_name2));
-		ArrayList<InversionEvent> inversion_steps = new ArrayList<InversionEvent>(); 
+		ArrayList<InversionEvent> inversion_steps = new ArrayList<InversionEvent>();
 		
+		System.out.println();
+		System.out.println("GRIMM");
+		System.out.println("=============================================");
 		while(br.ready()){
 			String line = br.readLine();
 			if(line.contains("Step") && !line.contains("Step 0")){

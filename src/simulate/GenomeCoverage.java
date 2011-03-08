@@ -23,9 +23,12 @@ public class GenomeCoverage {
 		
 		//Output Coverage
 		System.out.println("Coverage");
+		System.out.println("=============================================");
 		for(int i = 0; i < coverage_count.size(); i++){
-			System.out.println(i + " " + coverage_count.get(i));
+			System.out.print(coverage_count.get(i) + " ");
 		}
+		System.out.println();
+		System.out.println();
 		/*System.out.println();
 		for(int i = 0; i < coverage_count.size(); i++){
 			System.out.print(coverage_count.get(i) +  " ");

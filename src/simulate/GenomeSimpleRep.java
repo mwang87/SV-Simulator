@@ -218,4 +218,14 @@ public class GenomeSimpleRep extends Genome{
 		return retVal;
 	}
 	
+	public boolean equals(GenomeSimpleRep other_genome){
+		if(this.genome_array.size() != other_genome.genome_array.size())
+			return false;
+		for(int i = 0 ; i < this.genome_array.size(); i++){
+			if(this.genome_array.get(i) != other_genome.genome_array.get(i))
+				return false;
+		}
+		return true;
+	}
+	
 }

@@ -15,7 +15,7 @@ import events.InversionEvent;
 import events.SVEvent;
 
 public class main {
-
+	public static final boolean DEBUG = false;
 	/**
 	 * @param args
 	 * @throws IOException 
@@ -37,12 +37,13 @@ public class main {
 		//testDoubleInversionDeletion();
 		
 		//testDoubleDeletion();
-		//testDoubleInversionDeletion2();
+		testDoubleInversionDeletion2();
 		//testDoubleInversionDeletion3();
 		//testDoubleInversionDeletion4();
 		//testDoubleInversionDeletion5();
 		//testDoubleInversionDeletion7();
-		testDoubleInversionDeletion8();
+		//testDoubleInversionDeletion8();
+		//testDoubleInversionDeletion9();
 	}
 	
 	public static void testSingleDeletion() throws IOException{
@@ -189,6 +190,22 @@ public class main {
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}
 	
+	public static void testDoubleInversionDeletion9() throws IOException{
+		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
+		
+		sample_genome.print();
+		sample_genome.invert(4, 20);
+		sample_genome.print();
+		sample_genome.delete(3, 6);
+		sample_genome.print();
+		sample_genome.invert(4, 25);
+		sample_genome.print();
+		sample_genome.invert(2, 25);
+		sample_genome.print();
+		
+		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
+	}
+	
 	public static void testQuadrupleInversion() throws IOException{
 		ArrayList<GenomeSimpleRep> quadruple_inversions = GenomeSimpleRep.getQuadrupleInversion();
 		int genome_count = 0;
@@ -258,7 +275,7 @@ public class main {
 
 	}
 	
-	public static void simulateReadsAndClusterAndBreakAndVisualize(GenomeSimpleRep genome, int num_reads, int length) throws IOException{
+	public static void simulateReadsAndClusterAndBreakAndVisualize(GenomeSimpleRep genome, int num_reads, int length) throws IOException{		
 		int number_of_reads = num_reads;
 		ArrayList<PairedEndRead> reads = new ArrayList<PairedEndRead>();
 		ArrayList<PairedEndRead> concordant_reads = new ArrayList<PairedEndRead>();
@@ -274,6 +291,9 @@ public class main {
 				concordant_reads.add(sample_read);
 		}
 		
+		System.out.println();
+		System.out.println("Clustering");
+		System.out.println("=============================================");
 		Cluster read_cluster = new Cluster(reads);
 		System.out.println(read_cluster.toString());
 		
@@ -281,7 +301,7 @@ public class main {
 		GenomeCoverage coverage_runner = new GenomeCoverage();
 		ArrayList<Integer> coverage = coverage_runner.GenerateCoverage(all_reads, genome.original_size);
 		int no_coverage_segments = coverage_runner.CountContinuousNoCoverageSegments(coverage);
-		System.out.println("No Coverage Segments: " + no_coverage_segments);
+		if(DEBUG) System.out.println("No Coverage Segments: " + no_coverage_segments);
 		
 		//Numbering the segments for GRIMM
 		ArrayList<ArrayList<Integer>> segment_values = new ArrayList<ArrayList<Integer>>();
@@ -304,6 +324,11 @@ public class main {
 		NotSimpleDeletionDetector deletiondetector2 = new NotSimpleDeletionDetector();
 		GenomeSimpleRep working_genome = new GenomeSimpleRep(genome.original_size);
 		eventList = deletiondetector2.run(inversions, segment_values, segment_numbers.size(), coverage, eventList, working_genome, segment_numbers);
+		
+		System.out.println();
+		System.out.println("Deletion Detection");
+		System.out.println("=============================================");
+		
 		System.out.println("Eventual Number of Contiguous Deletions: " + eventList.number_contiguous_deletion_sections);
 		
 		//Attempting to Reconstruct Genome 
@@ -321,8 +346,13 @@ public class main {
 			reconstructed_genome.print();
 		}
 		sample_genome.print();
-		
-		
+		System.out.println("=============================================");
+		if(sample_genome.equals(reconstructed_genome))
+			System.out.println("EQUAL");
+		else
+			System.out.println("NOT EQUAL");
+		System.out.println("=============================================");
+
 		
 		ArrayList<Color> colors = Visualization.generateColor();
 		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);

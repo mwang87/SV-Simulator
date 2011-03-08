@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class Cluster {
+	public static final boolean DEBUG = false;
+	
 	ArrayList<ArrayList<PairedEndRead> > clustered_reads = new ArrayList<ArrayList<PairedEndRead>>();
 	
 	Cluster(ArrayList<PairedEndRead> reads){
@@ -90,7 +92,7 @@ public class Cluster {
 			//System.out.println("\tSecond Segment: \t(" + second_location_min + ", " + second_location_max + ")");
 			SegmentPair pair = new SegmentPair(first_location_min, first_location_max, second_location_min, second_location_max);
 			segment_pairs.add(pair);
-			System.out.println(pair.toString());
+			if(DEBUG) System.out.println(pair.toString());
 			
 			/* Turn segements into single numbers to solve breakpoint graph */
 		}
@@ -167,11 +169,11 @@ public class Cluster {
 				traversal_position += traversing_direction;
 			}
 			else{
-				System.out.print("Contiguous Segment: ");
+				if(DEBUG) System.out.print("Contiguous Segment: ");
 				for(Integer position: segment_included_values){
-					System.out.print(position + " ");
+					if(DEBUG) System.out.print(position + " ");
 				}
-				System.out.println();
+				if(DEBUG) System.out.println();
 				segment_values.add(segment_included_values);
 				segment_included_values = new ArrayList<Integer>();
 			}
@@ -197,10 +199,12 @@ public class Cluster {
 			//System.out.println(seg.toString());
 		}
 		
+		System.out.println("Input to GRIMM Source");
 		for(int i = 0; i < segment_numbers.size(); i++){
 			System.out.print(segment_numbers.get(i).ID + " ");
 		}
 		System.out.println();
+		System.out.println("Input to GRIMM Destination");
 		for(int i = 0; i < segment_numbers.size(); i++){
 			System.out.print(i+1 + " ");
 		}
