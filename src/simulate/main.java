@@ -33,8 +33,8 @@ public class main {
 		//testDoubleInversionDeletion2();
 		//testDoubleInversionDeletion3();
 		//testDoubleInversionDeletion4();
-		//testDoubleInversionDeletion5();
-		testDoubleInversionDeletion6();
+		testDoubleInversionDeletion5();
+		//testDoubleInversionDeletion6();
 	}
 	
 	public static void testSingleDeletion() throws IOException{
@@ -131,14 +131,14 @@ public class main {
 		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
 		
 		sample_genome.print();
-		sample_genome.invert(4, 20);
+		sample_genome.invert(4, 8);
 		sample_genome.print();
 		sample_genome.delete(3, 6);
 		sample_genome.print();
-		sample_genome.invert(4, 25);
+		sample_genome.invert(4, 10);
 		sample_genome.print();
-		sample_genome.invert(2, 9);
-		sample_genome.print();
+		//sample_genome.invert(2, 9);
+		//sample_genome.print();
 
 		
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		

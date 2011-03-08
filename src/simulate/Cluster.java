@@ -90,25 +90,29 @@ public class Cluster {
 			//System.out.println("\tSecond Segment: \t(" + second_location_min + ", " + second_location_max + ")");
 			SegmentPair pair = new SegmentPair(first_location_min, first_location_max, second_location_min, second_location_max);
 			segment_pairs.add(pair);
+			System.out.println(pair.toString());
+			
 			/* Turn segements into single numbers to solve breakpoint graph */
 		}
 		
 		
 		int traversing_direction = 1;		//1 means forward, -1 means backwards
-		int traversal_position = 1;
+		int traversal_position = 0;
 		int current_segment_start_location = 1;
 		
 		ArrayList<SegmentIDPosition> segment_numbers = new ArrayList<SegmentIDPosition>();
 		
 		while(true){
+			boolean hit_segment = false;
+			
 			//Find the first segement we hit
 			for(int i = 0; i < segment_pairs.size(); i++){
 				if(segment_pairs.get(i).isContained(traversal_position) == 1){
 					SegmentIDPosition segment = new SegmentIDPosition((segment_numbers.size() + 1) * (int)Math.signum(segment_pairs.get(i).start_first), Math.abs(traversal_position));
 					segment_numbers.add(segment);
 					
-					//System.out.println("Exit Position: " + traversal_position);
-					//System.out.println(segment.toString());
+					System.out.println("Exit Position: " + traversal_position);
+					System.out.println(segment.toString());
 					traversing_direction = 1;
 					
 					if(Math.signum(segment_pairs.get(i).start_second) == 1){
@@ -120,6 +124,7 @@ public class Cluster {
 					
 					
 					segment_pairs.remove(i);
+					hit_segment = true;
 					break;
 				}
 				
@@ -140,11 +145,17 @@ public class Cluster {
 					
 					
 					segment_pairs.remove(i);
+					hit_segment = true;
 					break;
 				}
 			}
-			//System.out.println(traversal_position);
-			traversal_position += traversing_direction;
+			
+			if(hit_segment == false){
+				traversal_position += traversing_direction;
+				if(traversal_position < 100){
+					System.out.println(traversal_position);
+				}
+			}
 			
 			if(segment_pairs.size() == 0){
 				SegmentIDPosition segment = new SegmentIDPosition((segment_numbers.size() + 1), 999999);
