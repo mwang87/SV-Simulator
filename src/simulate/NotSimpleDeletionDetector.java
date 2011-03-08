@@ -62,10 +62,14 @@ public class NotSimpleDeletionDetector {
 			System.out.println("Ran Out of Inversions");
 			event_list.number_contiguous_deletion_sections = not_covered_segments;
 			ArrayList<DeletionEvent> deletion_events = getDeletionEvent(coverage);
-			for(DeletionEvent del_event : deletion_events){
-				event_list.add(del_event);
-			}
 			event_list.number_contiguous_deletion_sections = deletion_events.size();
+			while(deletion_events.size() > 0){
+				DeletionEvent del_event = deletion_events.get(0);
+				event_list.add(del_event);
+				delete_coverage(coverage, del_event.start, del_event.end);
+				deletion_events = getDeletionEvent(coverage);
+			}
+			
 			return event_list;
 		}
 		
