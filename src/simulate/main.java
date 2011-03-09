@@ -41,11 +41,57 @@ public class main {
 		//testDoubleInversionDeletion3();
 		//testDoubleInversionDeletion4();
 		//testDoubleInversionDeletion5();
-		testDoubleInversionDeletion6();
+		//testDoubleInversionDeletion6();
 		//testDoubleInversionDeletion7();
 		//testDoubleInversionDeletion8();
 		//testDoubleInversionDeletion9();
-		//testHard2();
+		testHard1();
+		
+		//presentation2();
+	}
+	
+	public static void presentation1() throws IOException{
+		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
+		ArrayList<GenomeSimpleRep> genome_array = new ArrayList<GenomeSimpleRep>();
+		
+		genome_array.add(sample_genome.clone());
+		sample_genome.print();
+		sample_genome.invert(5, 20);
+		genome_array.add(sample_genome.clone());
+		sample_genome.print();
+		sample_genome.delete(7, 8);
+		genome_array.add(sample_genome.clone());
+		sample_genome.print();
+		sample_genome.invert(10, 15);
+		genome_array.add(sample_genome.clone());
+		sample_genome.print();
+		//sample_genome.invert(2, 9);
+		//sample_genome.print();
+
+		new VisualizeArrow(genome_array).drawStuff(true);
+		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
+	}
+	
+	public static void presentation2() throws IOException{
+		GenomeSimpleRep sample_genome = new GenomeSimpleRep(30);
+		ArrayList<GenomeSimpleRep> genome_array = new ArrayList<GenomeSimpleRep>();
+		
+		genome_array.add(sample_genome.clone());
+		sample_genome.print();
+		sample_genome.invert(5, 20);
+		genome_array.add(sample_genome.clone());
+		sample_genome.print();
+		sample_genome.delete(4, 8);
+		genome_array.add(sample_genome.clone());
+		sample_genome.print();
+		sample_genome.invert(10, 15);
+		genome_array.add(sample_genome.clone());
+		sample_genome.print();
+		//sample_genome.invert(2, 9);
+		//sample_genome.print();
+
+		new VisualizeArrow(genome_array).drawStuff(true);
+		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}
 	
 	public static void testSingleDeletion() throws IOException{
@@ -297,6 +343,8 @@ public class main {
 		sample_genome.print();
 		sample_genome.delete(5, 6);
 		sample_genome.print();
+		sample_genome.invert(15, 17);
+		sample_genome.print();
 		
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}
@@ -381,6 +429,8 @@ public class main {
 		
 		//Attempting to Reconstruct Genome 
 		GenomeSimpleRep reconstructed_genome = new GenomeSimpleRep(genome.original_size);
+		ArrayList<GenomeSimpleRep> genome_array = new ArrayList<GenomeSimpleRep>();
+		genome_array.add(reconstructed_genome.clone());
 		for(SVEvent event : eventList.list_of_events){
 			System.out.println(event.toString());
 			if(event instanceof InversionEvent){
@@ -391,6 +441,7 @@ public class main {
 				DeletionEvent del_event = (DeletionEvent)event;
 				reconstructed_genome.delete(del_event.start, del_event.end + 1);
 			}
+			genome_array.add(reconstructed_genome.clone());
 			reconstructed_genome.print();
 		}
 		sample_genome.print();
@@ -403,6 +454,7 @@ public class main {
 
 		
 		ArrayList<Color> colors = Visualization.generateColor();
+		new VisualizeArrow(genome_array).drawStuff(true);
 		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(true);
 		new Visualization(new GenomeSimpleRep(sample_genome.original_size), null, read_cluster, colors, true).drawStuff(true);
 	}
