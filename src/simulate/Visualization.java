@@ -53,20 +53,22 @@ public class Visualization extends JApplet {
 
 		// http://stackoverflow.com/questions/4515902/how-to-remove-the-title-bar-from-a-jframe-screenshot
 		if (writeToFile) {
-			String s = new Integer(sample_genome.hashCode()).toString()
-					+ new Integer(concordant_reads.hashCode()).toString()
-					+ new Integer(read_cluster.hashCode()).toString();
+			String s = new Integer(sample_genome.hashCode()).toString();
+			if(concordant_reads != null)
+					s += new Integer(concordant_reads.hashCode()).toString();
+			if(read_cluster != null)
+					s += new Integer(read_cluster.hashCode()).toString();
 			MessageDigest m;
 			try {
 				m = MessageDigest.getInstance("MD5");
 				m.update(s.getBytes(), 0, s.length());
 				String fileName = new BigInteger(1, m.digest()).toString(16)
-						+ ".jpeg";
+						+ ".png";
 
 				BufferedImage image = new BufferedImage(windowSizeX,
-						windowSizeY, BufferedImage.TYPE_INT_RGB);
+						windowSizeY, BufferedImage.TYPE_INT_ARGB);
 				this.paint(image.getGraphics());
-				ImageIO.write(image, "jpeg", new File(fileName));
+				ImageIO.write(image, "png", new File(fileName));
 			} catch (Exception e) {
 				// Auto-generated catch block
 				e.printStackTrace();

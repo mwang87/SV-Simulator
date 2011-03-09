@@ -10,9 +10,14 @@ import java.awt.RenderingHints;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 
@@ -42,6 +47,26 @@ public class VisualizeArrow extends JApplet {
 		f.pack();
 		f.setSize(new Dimension(windowSizeX, windowSizeY));
 		f.setVisible(true);
+		
+		
+		if (writeToFile) {
+			String s = new Integer(this.hashCode()).toString();
+			MessageDigest m;
+			try {
+				m = MessageDigest.getInstance("MD5");
+				m.update(s.getBytes(), 0, s.length());
+				String fileName = new BigInteger(1, m.digest()).toString(16)
+						+ ".png";
+
+				BufferedImage image = new BufferedImage(windowSizeX,
+						windowSizeY, BufferedImage.TYPE_INT_ARGB);
+				this.paint(image.getGraphics());
+				ImageIO.write(image, "png", new File(fileName));
+			} catch (Exception e) {
+				// Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	final static Color bg = Color.white;

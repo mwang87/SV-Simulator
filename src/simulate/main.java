@@ -41,10 +41,11 @@ public class main {
 		//testDoubleInversionDeletion3();
 		//testDoubleInversionDeletion4();
 		//testDoubleInversionDeletion5();
+		testDoubleInversionDeletion6();
 		//testDoubleInversionDeletion7();
 		//testDoubleInversionDeletion8();
 		//testDoubleInversionDeletion9();
-		testHard2();
+		//testHard2();
 	}
 	
 	public static void testSingleDeletion() throws IOException{
@@ -154,7 +155,7 @@ public class main {
 		//sample_genome.invert(2, 9);
 		//sample_genome.print();
 
-		new VisualizeArrow(genome_array).drawStuff(false);
+		new VisualizeArrow(genome_array).drawStuff(true);
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}
 	
@@ -402,8 +403,8 @@ public class main {
 
 		
 		ArrayList<Color> colors = Visualization.generateColor();
-		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
-		new Visualization(new GenomeSimpleRep(sample_genome.original_size), null, read_cluster, colors, true).drawStuff(false);
+		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(true);
+		new Visualization(new GenomeSimpleRep(sample_genome.original_size), null, read_cluster, colors, true).drawStuff(true);
 	}
 	
 	public static void testClusterGeneration(){
