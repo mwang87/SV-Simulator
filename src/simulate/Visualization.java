@@ -76,8 +76,8 @@ public class Visualization extends JApplet {
 		}
 	}
 
-	final static Color bg = Color.white;
-	final static Color fg = Color.black;
+	final static Color bg = Color.black;
+	final static Color fg = Color.white;
 
 	final static BasicStroke stroke = new BasicStroke(2.0f);
 	final static BasicStroke wideStroke = new BasicStroke(5.0f,
@@ -168,6 +168,7 @@ public class Visualization extends JApplet {
 
 		// Draw Arrows
 		int ctr = 0;
+		g2.setColor(Color.WHITE);
 		for (int i = 0; i < arrows.size(); i++) {
 
 			// Draw arrow body
@@ -297,7 +298,7 @@ public class Visualization extends JApplet {
 		
 		// Draw Read
 		g2.setStroke(stroke);
-		g2.setColor(Color.BLACK);
+		g2.setColor(Color.WHITE);
 		for (int i = 0; i < readsToDraw.size(); i++) {
 			Read num;
 			if (iambadatprogramming) {

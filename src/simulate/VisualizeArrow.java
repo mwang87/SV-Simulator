@@ -69,8 +69,8 @@ public class VisualizeArrow extends JApplet {
 		}
 	}
 
-	final static Color bg = Color.white;
-	final static Color fg = Color.black;
+	final static Color bg = Color.black;
+	final static Color fg = Color.white;
 
 	final static BasicStroke stroke = new BasicStroke(2.0f);
 	final static BasicStroke wideStroke = new BasicStroke(5.0f,
