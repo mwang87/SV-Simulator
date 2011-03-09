@@ -3,11 +3,35 @@ package simulate;
 public class PairedEndRead {
 	public int first_location;
 	public int second_location;
-	int length;
+	int length = 0;
 	
+	public PairedEndRead () {}
+	
+	public PairedEndRead(int first_location2, int second_location2, int length2) {
+		first_location = first_location2;
+		second_location = second_location2;
+		length = length2;
+	}
+
+	public int hashCode() {
+		
+        return (new Integer(first_location).toString() + new Integer(second_location).toString()).hashCode();
+    }
+	
+    public boolean equals(Object obj) {
+        if (obj == null) 
+        		return false;
+        if (!this.getClass().equals(obj.getClass())) 
+        		return false;
+        PairedEndRead obj2 = (PairedEndRead) obj;
+       
+        return (this.first_location == obj2.first_location) && (this.second_location == obj2.second_location);
+        
+    }
+    
 	@Override
 	public String toString(){
-		return "("+((Integer)(first_location)).toString() + "," + ((Integer)(second_location)).toString() + ")";
+		return "("+((Integer)(first_location)).toString() + ", " + ((Integer)(second_location)).toString() + ")";
 	}
 	
 	public boolean isConcordant(){

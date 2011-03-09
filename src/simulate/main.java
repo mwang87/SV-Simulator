@@ -34,7 +34,9 @@ public class main {
 		//testDoubleInversionDeletion3();
 		//testDoubleInversionDeletion4();
 		//testDoubleInversionDeletion5();
-		testDoubleInversionDeletion6();
+		//testDoubleInversionDeletion6();
+		
+		testSingleInsertion();
 	}
 	
 	public static void testSingleDeletion() throws IOException{
@@ -148,7 +150,6 @@ public class main {
 		new VisualizeArrow(genome_array).drawStuff(false);
 		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
 	}
-
 	
 	public static void testQuadrupleInversion() throws IOException{
 		ArrayList<GenomeSimpleRep> quadruple_inversions = GenomeSimpleRep.getQuadrupleInversion();
@@ -218,6 +219,24 @@ public class main {
 
 	}
 	
+	public static void testSingleInsertion() throws IOException{
+		GenomeSimpleRep sample_genome = new GenomeSimpleRep(7);
+		
+		Integer[] insertArray1 = {10, 11, 12};
+		Integer[] insertArray2 = {20, 21, 22};
+		
+		sample_genome.print();
+		sample_genome.invert(2, 4);
+		sample_genome.print();
+		sample_genome.insert(2, insertArray1);
+		sample_genome.print();
+		sample_genome.insert(9, insertArray2);
+		sample_genome.print();
+
+		
+		simulateReadsAndClusterAndBreakAndVisualize(sample_genome, 400, 1);		
+	}
+	
 	public static void simulateReadsAndClusterAndBreakAndVisualize(GenomeSimpleRep genome, int num_reads, int length) throws IOException{
 		int number_of_reads = num_reads;
 		ArrayList<PairedEndRead> reads = new ArrayList<PairedEndRead>();
@@ -236,26 +255,60 @@ public class main {
 		
 		Cluster read_cluster = new Cluster(reads);
 		System.out.println(read_cluster.toString());
+	
+		ArrayList<Color> colors = Visualization.generateColor();
+		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(true);
 		
+
+		
+		
+		//Find Insertions
+		SimpleInsertionDetector insertions = new SimpleInsertionDetector(reads, concordant_reads, genome.original_size);		
+		insertions.sortReads();
+		
+		reads = insertions.discordant_no_insertion;
+		reads.addAll(insertions.spanning_reads);
+		
+		concordant_reads = insertions.concordant_no_insertion;
+		all_reads.clear();
+		all_reads.addAll(reads);
+		all_reads.addAll(concordant_reads);
+		
+		SimpleInsertionDetector.removeInserted(sample_genome);
+		sample_genome.print();
+		
+		for (PairedEndRead read : reads){
+			if (read.isConcordant()) {
+				reads.remove(read);
+			}
+		}
+		
+		
+		 read_cluster = new Cluster(reads);
+			
+			new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(true);
+
+				 
+		/*
 		//Finding Genome Coverage
 		GenomeCoverage coverage_runner = new GenomeCoverage();
 		ArrayList<Integer> coverage = coverage_runner.GenerateCoverage(all_reads, genome.original_size);
 		int no_coverage_segments = coverage_runner.CountContinuousNoCoverageSegments(coverage);
 		System.out.println("No Coverage Segments: " + no_coverage_segments);
-		
+		*/
 		//Numbering the segments for GRIMM
-		ArrayList<ArrayList<Integer>> segment_values = new ArrayList<ArrayList<Integer>>();
+/*		ArrayList<ArrayList<Integer>> segment_values = new ArrayList<ArrayList<Integer>>();
 		ArrayList<SegmentIDPosition> segment_numbers = read_cluster.findBreakpoints(concordant_reads, segment_values);
 		GRIMM_runner g_runner = new GRIMM_runner();
 
 		ArrayList<InversionEvent> inversions = g_runner.run(segment_numbers);
+		*/
+		//SimpleDeletionDetector deletiondetector = new SimpleDeletionDetector();
+		//deletiondetector.run(inversions, segment_numbers.size());
 		
-		SimpleDeletionDetector deletiondetector = new SimpleDeletionDetector();
-		deletiondetector.run(inversions, segment_numbers.size());
 		
-		ArrayList<Color> colors = Visualization.generateColor();
-		new Visualization(sample_genome, null, read_cluster, colors, false).drawStuff(false);
-		new Visualization(new GenomeSimpleRep(sample_genome.original_size), null, read_cluster, colors, true).drawStuff(false);
+		new Visualization(new GenomeSimpleRep(sample_genome.original_size), null, read_cluster, colors, true).drawStuff(true);
+		
 	}
 	
 	public static void testClusterGeneration(){

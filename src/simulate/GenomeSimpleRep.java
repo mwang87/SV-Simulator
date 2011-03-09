@@ -1,6 +1,7 @@
 package simulate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class GenomeSimpleRep extends Genome{
@@ -34,6 +35,12 @@ public class GenomeSimpleRep extends Genome{
 		for(int i = start; i < end; i++){
 			genome_array.remove(start);
 		}
+		
+		return 0;
+	}
+	
+	public int insert(int start, Integer[] addSeq){
+		genome_array.addAll(start, new ArrayList<Integer>(Arrays.asList(addSeq)));
 		
 		return 0;
 	}

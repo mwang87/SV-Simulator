@@ -14,8 +14,8 @@ import java.util.StringTokenizer;
 public class GRIMM_runner {
 
 	public ArrayList<InversionEvent> run(ArrayList<SegmentIDPosition> segment_numbers) throws IOException{
-		String output_file_name = "/home/mingxun/Desktop/temp.txt";
-		String output_file_name2 = "/home/mingxun/Desktop/temp2.txt";
+		String output_file_name = "/Users/kevin/Dropbox/GRIMM-2.01/temp.txt";
+		String output_file_name2 = "/Users/kevin/Dropbox/GRIMM-2.01/temp2.txt";
 		FileOutputStream out = new FileOutputStream(output_file_name);
 		PrintStream p = new PrintStream( out );
 		p.println(">Genome1");
@@ -28,7 +28,7 @@ public class GRIMM_runner {
 			p.print(i+1 + " ");
 		}
 		
-		String cmd = "/home/mingxun/Desktop/GRIMM-2.01/grimm -f " + output_file_name;
+		String cmd = "/Users/kevin/Dropbox/GRIMM-2.01/grimm -f " + output_file_name;
 
 		Runtime run = Runtime.getRuntime() ;
 		Process pr = run.exec(cmd) ;

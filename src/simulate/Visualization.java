@@ -1,9 +1,18 @@
 package simulate;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.geom.Line2D;
+import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -13,7 +22,8 @@ import java.util.HashSet;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JApplet;
+import javax.swing.JFrame;
 
 public class Visualization extends JApplet {
 
@@ -54,7 +64,7 @@ public class Visualization extends JApplet {
 		// http://stackoverflow.com/questions/4515902/how-to-remove-the-title-bar-from-a-jframe-screenshot
 		if (writeToFile) {
 			String s = new Integer(sample_genome.hashCode()).toString()
-					+ new Integer(concordant_reads.hashCode()).toString()
+				//	+ new Integer(concordant_reads.hashCode()).toString()
 					+ new Integer(read_cluster.hashCode()).toString();
 			MessageDigest m;
 			try {
@@ -65,6 +75,9 @@ public class Visualization extends JApplet {
 
 				BufferedImage image = new BufferedImage(windowSizeX,
 						windowSizeY, BufferedImage.TYPE_INT_RGB);
+				/*RescaleOp op = new RescaleOp(-1.0f, 255f, null);
+				BufferedImage image = op.filter(image, null);*/
+
 				this.paint(image.getGraphics());
 				ImageIO.write(image, "jpeg", new File(fileName));
 			} catch (Exception e) {
