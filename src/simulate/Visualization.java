@@ -63,23 +63,24 @@ public class Visualization extends JApplet {
 
 		// http://stackoverflow.com/questions/4515902/how-to-remove-the-title-bar-from-a-jframe-screenshot
 		if (writeToFile) {
-			String s = new Integer(sample_genome.hashCode()).toString()
-				//	+ new Integer(concordant_reads.hashCode()).toString()
-					+ new Integer(read_cluster.hashCode()).toString();
+			
+			String s = new Integer(sample_genome.hashCode()).toString();
+			if(concordant_reads != null)
+					s += new Integer(concordant_reads.hashCode()).toString();
+			if(read_cluster != null)
+					s += new Integer(read_cluster.hashCode()).toString();
+
 			MessageDigest m;
 			try {
 				m = MessageDigest.getInstance("MD5");
 				m.update(s.getBytes(), 0, s.length());
 				String fileName = new BigInteger(1, m.digest()).toString(16)
-						+ ".jpeg";
+						+ ".png";
 
 				BufferedImage image = new BufferedImage(windowSizeX,
-						windowSizeY, BufferedImage.TYPE_INT_RGB);
-				/*RescaleOp op = new RescaleOp(-1.0f, 255f, null);
-				BufferedImage image = op.filter(image, null);*/
-
+						windowSizeY, BufferedImage.TYPE_INT_ARGB);
 				this.paint(image.getGraphics());
-				ImageIO.write(image, "jpeg", new File(fileName));
+				ImageIO.write(image, "png", new File(fileName));
 			} catch (Exception e) {
 				// Auto-generated catch block
 				e.printStackTrace();
@@ -87,8 +88,8 @@ public class Visualization extends JApplet {
 		}
 	}
 
-	final static Color bg = Color.white;
-	final static Color fg = Color.black;
+	final static Color bg = Color.black;
+	final static Color fg = Color.white;
 
 	final static BasicStroke stroke = new BasicStroke(2.0f);
 	final static BasicStroke wideStroke = new BasicStroke(5.0f,
@@ -179,6 +180,7 @@ public class Visualization extends JApplet {
 
 		// Draw Arrows
 		int ctr = 0;
+		g2.setColor(Color.WHITE);
 		for (int i = 0; i < arrows.size(); i++) {
 
 			// Draw arrow body
@@ -308,7 +310,7 @@ public class Visualization extends JApplet {
 		
 		// Draw Read
 		g2.setStroke(stroke);
-		g2.setColor(Color.BLACK);
+		g2.setColor(Color.WHITE);
 		for (int i = 0; i < readsToDraw.size(); i++) {
 			Read num;
 			if (iambadatprogramming) {
@@ -368,7 +370,7 @@ public class Visualization extends JApplet {
 	
 	public static ArrayList<Color> generateColor() {
 		ArrayList<Color> colorList = new ArrayList<Color>();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 50; i++) {
 			colorList.add(getColor());
 		}
 		return colorList;

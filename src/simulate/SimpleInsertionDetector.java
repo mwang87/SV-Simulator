@@ -84,7 +84,7 @@ public class SimpleInsertionDetector {
 		ArrayList<Integer> original_genome = new ArrayList<Integer>();
 		
 		for (Integer i : nome.genome_array) {
-			if (i.intValue() < nome_size) 
+			if (Math.abs(i.intValue()) < nome_size) 
 				original_genome.add(i);
 			
 			

@@ -9,6 +9,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import events.InversionEvent;
+
 
 
 public class GRIMM_runner {
@@ -46,8 +48,11 @@ public class GRIMM_runner {
 		p.print(GRIMM_output);
 		System.out.println();
 		BufferedReader br = new BufferedReader(new FileReader (output_file_name2));
-		ArrayList<InversionEvent> inversion_steps = new ArrayList<InversionEvent>(); 
+		ArrayList<InversionEvent> inversion_steps = new ArrayList<InversionEvent>();
 		
+		System.out.println();
+		System.out.println("GRIMM");
+		System.out.println("=============================================");
 		while(br.ready()){
 			String line = br.readLine();
 			if(line.contains("Step") && !line.contains("Step 0")){
@@ -75,6 +80,14 @@ public class GRIMM_runner {
 				
 			}
 		}
+		
+		//Reversing Direction
+		/*for(int i = 0; i < inversion_steps.size()/2; i++){
+			InversionEvent event1 = inversion_steps.get(inversion_steps.size() - 1 - i);
+			InversionEvent event2 = inversion_steps.get(i);
+			inversion_steps.set(i, event1);
+			inversion_steps.set(inversion_steps.size() - 1 - i, event2);
+		}*/
 		
 		for(InversionEvent event : inversion_steps){
 			System.out.println("Inversion: " + event.toString());

@@ -18,7 +18,7 @@ public class GenomeSimpleRep extends Genome{
 		generator = new Random(5);
 	}
 	
-	//Invert part of the genome
+	//Invert part of the genome, end is not inclusive
 	public int invert(int start, int end){
 		ArrayList<Integer> tempInversionSection  = new ArrayList<Integer>();
 		for(int i = start; i < end; i++){
@@ -30,6 +30,7 @@ public class GenomeSimpleRep extends Genome{
 		}
 		return 0;
 	}
+	
 	
 	public int delete(int start, int end){
 		for(int i = start; i < end; i++){
@@ -73,6 +74,31 @@ public class GenomeSimpleRep extends Genome{
 		ret_val.length = length;
 		
 		return ret_val;
+	}
+	
+	public ArrayList<Integer> getLeftRightIndex(ArrayList<Integer> inversion_elements){
+		int left = this.original_size;
+		int right = 0;
+		ArrayList<Integer> indicies = new ArrayList<Integer>();
+		for(Integer value : inversion_elements){
+			int index = this.genome_array.indexOf(value);
+			int index2 = this.genome_array.indexOf(-value);
+			if(index != -1){
+				if(index < left)
+					left = index;
+				if(index > right)
+					right = index;
+			}
+			if(index2 != -1){
+				if(index2 < left)
+					left = index2;
+				if(index2 > right)
+					right = index2;
+			}
+		}
+		indicies.add(left);
+		indicies.add(right);
+		return indicies;
 	}
 	
 	@Override
@@ -197,6 +223,16 @@ public class GenomeSimpleRep extends Genome{
 			retVal[i] = new Integer (genome_array.get(i)).intValue();
 		}
 		return retVal;
+	}
+	
+	public boolean equals(GenomeSimpleRep other_genome){
+		if(this.genome_array.size() != other_genome.genome_array.size())
+			return false;
+		for(int i = 0 ; i < this.genome_array.size(); i++){
+			if(this.genome_array.get(i) != other_genome.genome_array.get(i))
+				return false;
+		}
+		return true;
 	}
 	
 }
